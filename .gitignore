@@ -1,0 +1,44 @@
+# Node.js / React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+build/
+dist/
+.vite/
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+*.sqlite3
+*.db
+media/
+staticfiles/
+.env
+
+# General
+.DS_Store
+.vscode/
+.idea/
+*.log
+*.pid
+*.seed
+*.pid.lock
