@@ -1,6 +1,0 @@
-django==5.2.5
-channels
-whitenoise
-djangorestframework
-markdown
-django-filter
