@@ -1,0 +1,245 @@
+* {
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    transition: all 0.2s ease-out;
+    margin: 0;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+    padding: 20px
+}
+
+.content {
+    padding: 10px;
+    margin-bottom: 25px;
+    background-color: aliceblue;
+}
+
+
+.content-label {
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
+@media screen and (max-width: 820px) {
+    .main-container {
+        flex-direction: column;
+    }
+}
+
+/* Layout */
+.main-container {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 2rem;
+    font-family: Arial, sans-serif;
+}
+
+/* Left (form) and right (experience list) panels */
+.sub-container {
+    flex: 1;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.sub-container h1 {
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.sub-container h3 {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Form elements */
+form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+    color: #444;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: border 0.2s;
+}
+
+form input:focus, form textarea:focus {
+    border-color: #4A90E2;
+    outline: none;
+}
+
+form button {
+    background: #4A90E2;
+    color: #fff;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+form button:hover {
+    background: #357ABD;
+}
+
+/* Experiences section */
+#minor-experiences-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+/* Each experience item */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid #eee;
+    transition: box-shadow 0.2s;
+}
+
+.content-wrapper:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Buttons on the left of each experience */
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 0.6rem;
+}
+
+.button-wrapper button {
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.button-wrapper button:first-child {
+    background: #4A90E2;
+    color: white;
+}
+
+.button-wrapper button:first-child:hover {
+    background: #357ABD;
+}
+
+.button-wrapper button:last-child {
+    background: #E94E4E;
+    color: white;
+}
+
+.button-wrapper button:last-child:hover {
+    background: #C63C3C;
+}
+
+/* Experience content */
+.content {
+    flex: 1;
+}
+
+.content-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0.2rem 0;
+    color: #666;
+}
+
+.content-data {
+    margin: 0 0 0.6rem 0;
+    color: #333;
+}
+
+#descriptions {
+    margin-top: 0.5rem;
+}
+
+#descriptions .description {
+    padding-left: 1rem;
+    position: relative;
+}
+
+#descriptions .description::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #4A90E2;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin: 30px 0 0 30px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 8px 12px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown.show .dropdown-content {
+    display: block;
+}
+
+button {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.dropdown-Button {
+    background: #E94E4E;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-size: large;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.dropdown-Button:hover {
+    background: #C63C3C;
+}

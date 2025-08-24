@@ -9,10 +9,10 @@ import AddProjectForm from './AddProjectForm';
 import TechnicalSkillsForm from './TechnicalSkillsForm';
 
 const Manage = ({ fileUpload, setFileUpload }) => {
-  // Track active section
+  // track active section
   const [activeSection, setActiveSection] = useState('experiences');
   
-  // Track all data for different sections
+  // track all data for different sections
   const [experiences, setExperiences] = useState([]);
   const [education, setEducation] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -24,28 +24,29 @@ const Manage = ({ fileUpload, setFileUpload }) => {
     databases: { enabled: false, items: [] }
   });
   
-  // Track which item is being edited for each section
+  // track which item is being edited for each section
   const [editingExperience, setEditingExperience] = useState(null);
   const [editingEducation, setEditingEducation] = useState(null);
   const [editingProject, setEditingProject] = useState(null);
 
-  // Section configuration
+  // section configuration
   const sections = [
-    { id: 'experiences', label: 'Experiences', icon: '💼' },
-    { id: 'education', label: 'Education', icon: '🎓' },
-    { id: 'projects', label: 'Projects', icon: '🚀' },
-    { id: 'skills', label: 'Technical Skills', icon: '⚡' }
+    { id: 'experiences', label: 'Experiences'},
+    { id: 'education', label: 'Education'},
+    { id: 'projects', label: 'Projects'},
+    { id: 'skills', label: 'Technical Skills'}
   ];
 
   // Generic handlers for experiences
   const handleAddExperience = (newExperience) => {
-    console.log('Adding experience:', newExperience);
     const experienceWithId = { ...newExperience, id: Date.now() };
+    // create new experience and add to the prev list of experiences
     setExperiences([...experiences, experienceWithId]);
   };
 
   const handleEditExperience = (updatedExperience) => {
     console.log('Updating experience:', updatedExperience);
+    // check if the experience id matches then you change the content of that
     setExperiences(experiences.map(exp => 
       exp.id === updatedExperience.id ? updatedExperience : exp
     ));
@@ -313,7 +314,6 @@ const Manage = ({ fileUpload, setFileUpload }) => {
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-600'
             }`}
           >
-            <span className="mr-1">{section.icon}</span>
             {section.label}
           </button>
         ))}

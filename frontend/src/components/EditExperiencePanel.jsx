@@ -62,8 +62,8 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     
     // Basic validation
     if (!formData.title || !formData.company) {

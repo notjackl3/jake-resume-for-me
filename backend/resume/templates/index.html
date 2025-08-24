@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'static-resume/style.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hello World</h1>
+    
+    <!-- <embed src="{{ MEDIA_URL }}media-resume/resume.pdf" type="application/pdf" width="100%" height="600px" title="PDF Document"></embed> -->
+
+    <iframe id="pdfPreview" width="100%" height="600px" frameborder="0" title="PDF Document"></iframe>
+    <!-- src="{{ MEDIA_URL }}media-resume/resume.pdf" -->
+
+    <div class="dropdown">
+        <button id="dropdownButton" class="dropdown-Button">Select a section ▼</button>
+        <div id="dropdownContent" class="dropdown-content">
+            <a href="#" data-query="education" data-value="Education ▼">Education</a>
+            <a href="#" data-query="technical" data-value="Technical Skills ▼">Technical Skills</a>
+            <a href="#" data-query="work" data-value="Work Experiences ▼">Work Experiences</a>
+            <a href="#" data-query="project" data-value="Personal Projects ▼">Personal Projects</a>
+            <a href="#" data-query="leadership" data-value="Leadership Abilities ▼">Leadership Abilities</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <form id="leadership-input-panel" class="sub-container" style="display: none;">
+            {% csrf_token %}
+
+            <label for="name">Experience Name:</label>
+            <input type="text" id="leadership-name" name="leadership-name" maxlength="100" required><br><br>
+            <label for="date">Date:</label>
+            <input type="text" id="leadership-date" name="leadership-date" maxlength="100" required><br><br>
+            <label for="location">Location:</label>
+            <input type="text" id="leadership-location" name="leadership-location" maxlength="100" required><br><br>
+            <label for="organisation">Organisation:</label>
+            <input type="text" id="leadership-organisation" name="leadership-organisation" maxlength="100" required><br><br>
+        
+            <label for="description1">Description 1:</label>
+            <textarea id="leadership-description1" name="leadership-descriptions[]" rows="3" cols="50"></textarea><br><br>
+            <label for="leadership-description2">Description 2:</label>
+            <textarea id="leadership-description2" name="leadership-descriptions[]" rows="3" cols="50"></textarea><br><br>
+            <label for="leadership-description3">Description 3:</label>
+            <textarea id="leadership-description3" name="leadership-descriptions[]" rows="3" cols="50"></textarea><br><br>
+        
+            <button type="submit">Submit Experience</button>
+        </form>   
+
+        <div id="leadership-content-panel" class="sub-container" style="display: none;">
+            <h1 id="section">Leadership</h1>
+            <div id="leadership-container" class="content-container"></div>
+        </div>
+    </div>
+
+    <form id="restart-pdf">
+        <button type="submit">Prepare pdf</button>
+    </form>
+    <form id="reset-panel-form">
+        <button type="submit">Reset panel</button>
+    </form>
+
+
+</body>
+<script>
+    const LEADERSHIP_FORM = document.getElementById("leadership-input-panel");
+    const RESET_PANEL_FORM = document.getElementById("reset-panel-form");
+    const REFRESH_PDF_URL = "{% url 'refresh_pdf' %}";
+    const RESET_PANEL_URL = "{% url 'reset_panel' %}";
+    const DELETE_URL = "{% url 'delete_experience' %}";
+    const EDIT_URL = "{% url 'edit_experience' %}";
+    const EDIT_PDF_URL = "{% url 'edit_pdf' %}";
+
+    window.onload = () => {
+        fetch(REFRESH_PDF_URL);    
+        fetch(RESET_PANEL_URL);
+    };
+</script>
+<script src="{% static 'static-resume/interactions.js' %}"></script> 
+<script src="{% static 'static-resume/websocket.js' %}"></script> 
+<script src="{% static 'static-resume/script.js' %}"></script> 
+</html>
