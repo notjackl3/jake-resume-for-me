@@ -5,9 +5,18 @@ from django.urls import path, include
 # now we can extend the origin router with our own routers
 router = DefaultRouter()
 
-#education
+# education
 router.registry.extend(education_router.registry)
 
+# experiences
+router.registry.extend(experience_router.registry)
+
+# projects
+router.registry.extend(project_router.registry)
+
+# technical skills
+router.registry.extend(technical_skills_router.registry)
+
 urlpatterns = [
-    path("", include(router.urls)) # this is the main path, but our path other sections is called (*)
+    path("", include(router.urls)) # this is the main path, but our path to other sections is called (*)
 ]

@@ -7,7 +7,7 @@ education_router = DefaultRouter()
 education_router.register(r"education", EducationViewSet)
 
 experience_router = DefaultRouter()
-experience_router.register(r"experiences", ExperienceViewSet)
+experience_router.register(r"experiences", ExperienceViewSet) # whatever you put in r"" will be your / for this api endpoint
 
 project_router = DefaultRouter()
 project_router.register(r"projects", ProjectViewSet)

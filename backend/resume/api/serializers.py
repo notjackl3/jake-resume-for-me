@@ -20,7 +20,7 @@ class ExperienceSerializer(ModelSerializer):
         fields = ("id", "title", "organisation", "location", "start_date", "end_date", "descriptions")
 
 class ProjectSerializer(ModelSerializer):
-    description = DescriptionSerializer(read_only=True, many=True)
+    descriptions = DescriptionSerializer(read_only=True, many=True)
 
     class Meta:
         model = Project

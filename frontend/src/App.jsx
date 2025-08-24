@@ -15,6 +15,34 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 function App() {
   const [fileUpload, setFileUpload] = useState();
 
+  useEffect(() => {
+    const VITE_API_URL = import.meta.env.VITE_API_URL
+    async function fetchEducationData() {
+      console.log(VITE_API_URL)
+      try {
+        const response = await fetch(`${VITE_API_URL}/education`)
+        if (!response.ok) {
+          throw new Error("Network response is not ok");
+        }
+        const result = await response.json();
+        return result
+      } catch (error) {
+        console.log("Error fetching data: ", error)
+      }
+    }
+
+    async function fetchDataAndLog() {
+      const educationData = await fetchEducationData();
+      console.log("School: ");
+      console.log(educationData); 
+      console.log(educationData[0].school);
+      console.log(educationData[0].major);
+    }
+
+    fetchDataAndLog();
+
+  }, [])
+
   return (
     <main>
       <div className="pattern"/>
