@@ -6,8 +6,8 @@ const AddEducationForm = ({ onSubmit }) => {
     university: '',
     major: '',
     location: '',
-    startDate: '',
-    endDate: '',
+    start_date: '',
+    end_date: '',
     gpa: '',
     useGpa: false // Toggle for GPA vs Date
   });
@@ -26,7 +26,7 @@ const AddEducationForm = ({ onSubmit }) => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.university || !formData.major) {
+    if (!formData.school || !formData.major) {
       alert('Please fill in university/college and major');
       return;
     }
@@ -34,8 +34,8 @@ const AddEducationForm = ({ onSubmit }) => {
     // Clean data based on toggle choice
     const cleanedData = {
       ...formData,
-      startDate: formData.useGpa ? '' : formData.startDate,
-      endDate: formData.useGpa ? '' : formData.endDate,
+      start_date: formData.useGpa ? '' : formData.start_date,
+      end_date: formData.useGpa ? '' : formData.end_date,
       gpa: formData.useGpa ? formData.gpa : ''
     };
 
@@ -46,8 +46,8 @@ const AddEducationForm = ({ onSubmit }) => {
       university: '',
       major: '',
       location: '',
-      startDate: '',
-      endDate: '',
+      start_date: '',
+      end_date: '',
       gpa: '',
       useGpa: false
     });
@@ -63,7 +63,7 @@ const AddEducationForm = ({ onSubmit }) => {
         <input
           type="text"
           name="university"
-          value={formData.university}
+          value={formData.school}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
           placeholder="e.g. University of Toronto"
@@ -124,8 +124,8 @@ const AddEducationForm = ({ onSubmit }) => {
                 </label>
                 <input
                 type="month"
-                name="startDate"
-                value={formData.startDate}
+                name="start_date"
+                value={formData.start_date}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
                 />
@@ -136,8 +136,8 @@ const AddEducationForm = ({ onSubmit }) => {
             </label>
             <input
                 type="month"
-                name="endDate"
-                value={formData.endDate}
+                name="end_date"
+                value={formData.end_date}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
             />

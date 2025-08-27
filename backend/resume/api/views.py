@@ -14,6 +14,6 @@ class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-class TechnicalSkillsViewSet(ModelViewSet):
-    queryset = TechnicalSkills.objects.all()
-    serializer_class = TechnicalSkillsSerializer
+class SkillsViewSet(ModelViewSet):
+    queryset = Skills.objects.all()
+    serializer_class = SkillsSerializer

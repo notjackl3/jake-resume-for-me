@@ -8,8 +8,8 @@ const AddExperienceForm = ({ onSubmit }) => {
     title: '',
     organisation: '',
     location: '',
-    startDate: '',
-    endDate: '',
+    start_date: '',
+    end_date: '',
     descriptions: [''] // Array of description fields
   });
 
@@ -65,14 +65,15 @@ const AddExperienceForm = ({ onSubmit }) => {
       descriptions: formData.descriptions.filter(desc => desc.trim() !== '')
     };
 
+    // this obSubmit function is taken from the parameter, so the child's job is to clean up the data, clear up the form, and then send back the data to the parent, and the parent will take care of the logic like sending data to the server
     onSubmit(cleanedData);
     
     setFormData({
       title: '',
       organisation: '',
       location: '',
-      startDate: '',
-      endDate: '',
+      start_date: '',
+      end_date: '',
       descriptions: ['']
     });
   };
@@ -134,8 +135,8 @@ const AddExperienceForm = ({ onSubmit }) => {
           </label>
           <input
             type="month"
-            name="startDate"
-            value={formData.startDate}
+            name="start_date"
+            value={formData.start_date}
             onChange={handleInputChange}
             className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
           />
@@ -146,8 +147,8 @@ const AddExperienceForm = ({ onSubmit }) => {
           </label>
           <input
             type="month"
-            name="endDate"
-            value={formData.endDate}
+            name="end_date"
+            value={formData.end_date}
             onChange={handleInputChange}
             className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
           />

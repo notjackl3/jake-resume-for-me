@@ -1,28 +1,47 @@
 // Manage.jsx - Multi-section resume manager
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios"
 import AddExperienceForm from './AddExperienceForm';
 import EditExperiencePanel from './EditExperiencePanel';
 import AddEducationForm from './AddEducationForm';
 // import EditEducationPanel from './EditEducationPanel';
 import AddProjectForm from './AddProjectForm';
 // import EditProjectPanel from './EditProjectPanel';
-import TechnicalSkillsForm from './TechnicalSkillsForm';
+import SkillsForm from './SkillsForm';
 
-const Manage = ({ fileUpload, setFileUpload }) => {
+const Manage = ({ educationData, experiencesData, projectsData, skillsData }) => {
   // track active section
   const [activeSection, setActiveSection] = useState('experiences');
   
-  // track all data for different sections
-  const [experiences, setExperiences] = useState([]);
-  const [education, setEducation] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [technicalSkills, setTechnicalSkills] = useState({
-    languages: { enabled: false, items: [] },
-    tools: { enabled: false, items: [] },
-    frameworks: { enabled: false, items: [] },
-    certificates: { enabled: false, items: [] },
-    databases: { enabled: false, items: [] }
-  });
+  // track all data for different sections - Initialize with the props data
+  const [experiences, setExperiences] = useState(experiencesData || []);
+  const [education, setEducation] = useState(educationData || []);
+  const [projects, setProjects] = useState(projectsData || []);
+  const [skills, setSkills] = useState(skillsData || []);
+
+  // Only update when props actually change
+  useEffect(() => {
+    console.log("Props received:", { educationData, experiencesData, projectsData, skillsData });
+    
+    if (educationData !== undefined) {
+      setEducation(educationData);
+    }
+    if (experiencesData !== undefined) {
+      console.log("Setting experiences:", experiencesData);
+      setExperiences(experiencesData);
+    }
+    if (projectsData !== undefined) {
+      setProjects(projectsData);
+    }
+    if (skillsData !== undefined) {
+      setSkills(skillsData);
+    }
+  }, [educationData, experiencesData, projectsData, skillsData]);
+
+  // Add another useEffect to debug experiences state
+  useEffect(() => {
+    console.log("Experiences state updated:", experiences);
+  }, [experiences]);
   
   // track which item is being edited for each section
   const [editingExperience, setEditingExperience] = useState(null);
@@ -34,28 +53,59 @@ const Manage = ({ fileUpload, setFileUpload }) => {
     { id: 'experiences', label: 'Experiences'},
     { id: 'education', label: 'Education'},
     { id: 'projects', label: 'Projects'},
-    { id: 'skills', label: 'Technical Skills'}
+    { id: 'skills', label: 'Skills'}
   ];
 
   // Generic handlers for experiences
-  const handleAddExperience = (newExperience) => {
+  const postExperience = async (exp) => {
+    const title = exp.title 
+    const organisation = exp.organisation 
+    const location = exp.location 
+    const start_date = exp.start_date
+    const end_date = exp.end_date
+    const descriptions = exp.descriptions.map(desc => ({"content": desc}));
+
+    const body = {title, organisation, location, start_date, end_date, descriptions}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    console.log("body:", body)
+
+    const VITE_API_URL = import.meta.env.VITE_API_URL
+    const EXPERIENCES_ENDPOINT = `${VITE_API_URL}/experiences/`
+    const response = await axios.post(EXPERIENCES_ENDPOINT, body, config)
+    console.log(response)
+    return response.data
+  }
+
+  const handleAddExperience = async (newExperience) => {
+    // to update the frontend
     const experienceWithId = { ...newExperience, id: Date.now() };
-    // create new experience and add to the prev list of experiences
-    setExperiences([...experiences, experienceWithId]);
+    const updatedExperiences = [...experiences, experienceWithId];
+    setExperiences(updatedExperiences);
+
+    //to update the backend
+    const newData = await postExperience(newExperience);
+    // console.log("New experience:", newExperience);
+    // console.log("Added experience, current experiences:", updatedExperiences);
   };
 
   const handleEditExperience = (updatedExperience) => {
     console.log('Updating experience:', updatedExperience);
-    // check if the experience id matches then you change the content of that
-    setExperiences(experiences.map(exp => 
+    const updatedExperiences = experiences.map(exp => 
       exp.id === updatedExperience.id ? updatedExperience : exp
-    ));
+    );
+    setExperiences(updatedExperiences);
     setEditingExperience(null);
   };
 
   const handleDeleteExperience = (experienceId) => {
     console.log('Deleting experience:', experienceId);
-    setExperiences(experiences.filter(exp => exp.id !== experienceId));
+    const updatedExperiences = experiences.filter(exp => exp.id !== experienceId);
+    setExperiences(updatedExperiences);
     if (editingExperience && editingExperience.id === experienceId) {
       setEditingExperience(null);
     }
@@ -108,9 +158,9 @@ const Manage = ({ fileUpload, setFileUpload }) => {
   };
 
   // Handler for technical skills
-  const handleUpdateTechnicalSkills = (updatedSkills) => {
+  const handleUpdateSkills = (updatedSkills) => {
     console.log('Updating technical skills:', updatedSkills);
-    setTechnicalSkills(updatedSkills);
+    setSkills(updatedSkills);
   };
 
   // Get current data based on active section
@@ -119,7 +169,7 @@ const Manage = ({ fileUpload, setFileUpload }) => {
       case 'experiences': return experiences;
       case 'education': return education;
       case 'projects': return projects;
-      case 'skills': return technicalSkills;
+      case 'skills': return skills;
       default: return [];
     }
   };
@@ -180,13 +230,14 @@ const Manage = ({ fileUpload, setFileUpload }) => {
       // Add mode
       switch (activeSection) {
         case 'experiences':
+          // here after the child cleans up the data then you call handleAllExperience() for the backend logic
           return <AddExperienceForm onSubmit={handleAddExperience} />;
         case 'education':
           return <AddEducationForm onSubmit={handleAddEducation} />;
         case 'projects':
           return <AddProjectForm onSubmit={handleAddProject} />;
         case 'skills':
-          return <TechnicalSkillsForm skills={technicalSkills} onUpdate={handleUpdateTechnicalSkills} />;
+          return <SkillsForm skills={skills} onUpdate={handleUpdateSkills} />;
         default:
           return null;
       }
@@ -197,6 +248,9 @@ const Manage = ({ fileUpload, setFileUpload }) => {
   const renderListItems = () => {
     const currentData = getCurrentData();
     const editingItem = getCurrentEditingItem();
+
+    console.log("Rendering list items for section:", activeSection);
+    console.log("Current data:", currentData);
 
     if (activeSection === 'skills') {
       // Technical skills don't have a list, just the form
@@ -209,9 +263,14 @@ const Manage = ({ fileUpload, setFileUpload }) => {
 
     if (!Array.isArray(currentData) || currentData.length === 0) {
       return (
-        <p className="text-gray-500 text-center py-8">
-          No {sections.find(s => s.id === activeSection)?.label.toLowerCase()} added yet. Add your first one above!
-        </p>
+        <div className="text-center py-8">
+          <p className="text-gray-500">
+            No {sections.find(s => s.id === activeSection)?.label.toLowerCase()} added yet.
+          </p>
+          <p className="text-gray-400 text-sm mt-2">
+            Add your first one above! (Current data: {JSON.stringify(currentData)})
+          </p>
+        </div>
       );
     }
 
@@ -231,22 +290,22 @@ const Manage = ({ fileUpload, setFileUpload }) => {
                 <>
                   <h3 className="font-medium text-gray-900">{item.title}</h3>
                   <p className="text-sm text-gray-600">{item.organisation} • {item.location}</p>
-                  <p className="text-sm text-gray-500">{item.startDate} - {item.endDate}</p>
+                  <p className="text-sm text-gray-500">{item.start_date} - {item.end_date}</p>
                 </>
               )}
               {activeSection === 'education' && (
                 <>
-                  <h3 className="font-medium text-gray-900">{item.degree} in {item.major}</h3>
-                  <p className="text-sm text-gray-600">{item.university} • {item.location}</p>
+                  <h3 className="font-medium text-gray-900">{item.major}</h3>
+                  <p className="text-sm text-gray-600">{item.school} • {item.location}</p>
                   <p className="text-sm text-gray-500">
-                    {item.startDate} - {item.endDate}
+                    {item.start_date} - {item.end_date}
                     {item.gpa && ` • GPA: ${item.gpa}`}
                   </p>
                 </>
               )}
               {activeSection === 'projects' && (
                 <>
-                  <h3 className="font-medium text-gray-900">{item.name}</h3>
+                  <h3 className="font-medium text-gray-900">{item.title}</h3>
                   <p className="text-sm text-gray-600">Tools: {item.tools}</p>
                   {item.sourceCode && (
                     <a href={item.sourceCode} className="text-sm text-blue-600 hover:underline">
@@ -302,6 +361,11 @@ const Manage = ({ fileUpload, setFileUpload }) => {
   return (
     <div className="h-full flex flex-col gap-4 p-4">
       
+      {/* Debug Info */}
+      <div className="text-xs text-gray-400 bg-gray-100 p-2 rounded">
+        Debug: Active: {activeSection} | Experiences: {experiences?.length || 0} items | Props: {experiencesData?.length || 0}
+      </div>
+
       {/* Section Tabs */}
       <div className="flex gap-2 p-1 bg-gray-800 rounded-lg">
         {sections.map((section) => (
@@ -340,7 +404,7 @@ const Manage = ({ fileUpload, setFileUpload }) => {
 
       {/* Bottom: List */}
       <div className="bg-gray-800 rounded-lg p-4 shadow-sm border flex-1">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+        <h2 className="text-lg font-semibold text-gray-300 mb-4">
           Your {sections.find(s => s.id === activeSection)?.label}
         </h2>
         {renderListItems()}
