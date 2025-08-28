@@ -30,13 +30,13 @@ class Experience(models.Model):
         return f"{self.title} - {self.organisation} - {self.location}"
     
 class Project(models.Model):
-    title = models.CharField()
+    name = models.CharField()
     tools = models.CharField()
     source_code = models.CharField()
     descriptions = models.ManyToManyField(Description, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.title} - {self.tools}"
+        return f"{self.name} - {self.tools}"
 
 class Skills(models.Model):
     languages_list = models.CharField(null=True, blank=True)

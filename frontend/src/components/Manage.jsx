@@ -9,6 +9,12 @@ import AddProjectForm from './AddProjectForm';
 // import EditProjectPanel from './EditProjectPanel';
 import SkillsForm from './SkillsForm';
 
+
+const VITE_API_URL = import.meta.env.VITE_API_URL
+const EDUCATION_ENDPOINT = `${VITE_API_URL}/education/`
+const EXPERIENCES_ENDPOINT = `${VITE_API_URL}/experiences/`
+
+
 const Manage = ({ educationData, experiencesData, projectsData, skillsData }) => {
   // track active section
   const [activeSection, setActiveSection] = useState('experiences');
@@ -56,7 +62,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     { id: 'skills', label: 'Skills'}
   ];
 
-  // Generic handlers for experiences
   const postExperience = async (exp) => {
     const title = exp.title 
     const organisation = exp.organisation 
@@ -74,8 +79,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
 
     console.log("body:", body)
 
-    const VITE_API_URL = import.meta.env.VITE_API_URL
-    const EXPERIENCES_ENDPOINT = `${VITE_API_URL}/experiences/`
     const response = await axios.post(EXPERIENCES_ENDPOINT, body, config)
     console.log(response)
     return response.data
@@ -111,11 +114,35 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     }
   };
 
-  // Generic handlers for education
-  const handleAddEducation = (newEducation) => {
+
+  const postEducation = async (edu) => {
+    const school = edu.school
+    const major = edu.major
+    const location = edu.location
+    const start_date = edu.start_date
+    const end_date = edu.end_date
+    const gpa = edu.gpa
+
+    const body = {school, major, location, start_date, end_date, gpa}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    console.log("body:", body)
+
+    const response = await axios.post(EDUCATION_ENDPOINT, body, config)
+    console.log(response)
+    return response.data
+  }
+
+  const handleAddEducation = async (newEducation) => {
     console.log('Adding education:', newEducation);
     const educationWithId = { ...newEducation, id: Date.now() };
     setEducation([...education, educationWithId]);
+
+    const newData = await postEducation(newEducation);
   };
 
   const handleEditEducation = (updatedEducation) => {
@@ -134,11 +161,34 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     }
   };
 
-  // Generic handlers for projects
-  const handleAddProject = (newProject) => {
+  const postProject = async (proj) => {
+    const title = proj.school
+    const major = edu.major
+    const location = edu.location
+    const start_date = edu.start_date
+    const end_date = edu.end_date
+    const gpa = edu.gpa
+
+    const body = {school, major, location, start_date, end_date, gpa}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    console.log("body:", body)
+
+    const response = await axios.post(EDUCATION_ENDPOINT, body, config)
+    console.log(response)
+    return response.data
+  }
+
+  const handleAddProject = async (newProject) => {
     console.log('Adding project:', newProject);
     const projectWithId = { ...newProject, id: Date.now() };
     setProjects([...projects, projectWithId]);
+
+    const newData = await postProject(newProject);
   };
 
   const handleEditProject = (updatedProject) => {
@@ -388,7 +438,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
         {getCurrentEditingItem() ? (
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-lg font-semibold text-green-800">
-              Edit {sections.find(s => s.id === activeSection)?.label.slice(0, -1)}
+              Edit {sections.find(s => s.id === activeSection)?.label}
             </h2>
             <span className="text-sm text-gray-500">
               Currently editing
@@ -396,7 +446,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
           </div>
         ) : (
           <h2 className="text-lg font-semibold text-fuchsia-300 mb-3">
-            Add New {sections.find(s => s.id === activeSection)?.label.slice(0, -1) || 'Item'}
+            Add New {sections.find(s => s.id === activeSection)?.label || 'Item'}
           </h2>
         )}
         {renderForm()}

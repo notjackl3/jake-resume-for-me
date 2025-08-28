@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const AddEducationForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
-    university: '',
+    school: '',
     major: '',
     location: '',
     start_date: '',
@@ -13,8 +13,8 @@ const AddEducationForm = ({ onSubmit }) => {
   });
 
   // Handle regular input changes
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleInputChange = (even) => {
+    const { name, value, type, checked } = event.target;
     setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
@@ -24,10 +24,11 @@ const AddEducationForm = ({ onSubmit }) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(formData)
     
-    // Basic validation
     if (!formData.school || !formData.major) {
-      alert('Please fill in university/college and major');
+      alert('Please fill in school/college and major');
       return;
     }
 
@@ -41,9 +42,8 @@ const AddEducationForm = ({ onSubmit }) => {
 
     onSubmit(cleanedData);
     
-    // Reset form
     setFormData({
-      university: '',
+      school: '',
       major: '',
       location: '',
       start_date: '',
@@ -55,14 +55,13 @@ const AddEducationForm = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* University */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          University/College *
+          School/university *
         </label>
         <input
           type="text"
-          name="university"
+          name="school"
           value={formData.school}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"

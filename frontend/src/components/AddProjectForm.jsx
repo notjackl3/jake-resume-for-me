@@ -5,7 +5,7 @@ const AddProjectForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     name: '',
     tools: '',
-    sourceCode: '',
+    source_code: '',
     descriptions: [''] // Array of description fields
   });
 
@@ -69,7 +69,7 @@ const AddProjectForm = ({ onSubmit }) => {
     setFormData({
       name: '',
       tools: '',
-      sourceCode: '',
+      source_code: '',
       descriptions: ['']
     });
   };
@@ -114,8 +114,8 @@ const AddProjectForm = ({ onSubmit }) => {
         </label>
         <input
           type="url"
-          name="sourceCode"
-          value={formData.sourceCode}
+          name="source_code"
+          value={formData.source_code}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-fuchsia-300 focus:border-transparent"
           placeholder="e.g. https://github.com/username/project"

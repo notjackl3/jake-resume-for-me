@@ -5,6 +5,13 @@ class EducationSerializer(ModelSerializer):
     class Meta:
         model = Education
         fields = ("id", "school", "major", "location", "start_date", "end_date", "gpa")
+    
+    def create(self, validated_data):
+        print("this ran")
+        print("data here:", validated_data)
+        education = Education.objects.create(**validated_data)
+
+        return education
 
 # create our model into json format to be sent over the web
 class DescriptionSerializer(ModelSerializer):
@@ -34,7 +41,7 @@ class ProjectSerializer(ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ("id", "title", "tools", "source_code", "descriptions")
+        fields = ("id", "name", "tools", "source_code", "descriptions")
 
 class SkillsSerializer(ModelSerializer):
     class Meta:
