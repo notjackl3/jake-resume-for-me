@@ -31,8 +31,8 @@ class Experience(models.Model):
     
 class Project(models.Model):
     name = models.CharField()
-    tools = models.CharField()
-    source_code = models.CharField()
+    tools = models.CharField(null=True, blank=True)
+    source_code = models.CharField(null=True, blank=True)
     descriptions = models.ManyToManyField(Description, null=True, blank=True)
 
     def __str__(self):

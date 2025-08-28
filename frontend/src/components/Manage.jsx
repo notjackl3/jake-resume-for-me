@@ -13,6 +13,7 @@ import SkillsForm from './SkillsForm';
 const VITE_API_URL = import.meta.env.VITE_API_URL
 const EDUCATION_ENDPOINT = `${VITE_API_URL}/education/`
 const EXPERIENCES_ENDPOINT = `${VITE_API_URL}/experiences/`
+const PROJECTS_ENDPOINT = `${VITE_API_URL}/projects/`
 
 
 const Manage = ({ educationData, experiencesData, projectsData, skillsData }) => {
@@ -105,15 +106,28 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     setEditingExperience(null);
   };
 
-  const handleDeleteExperience = (experienceId) => {
+  const deleteItem = async (id, endpoint) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const response = await axios.delete(`${endpoint}${id}/delete/`, config)
+    console.log(response)
+    return response.data
+  }
+
+  const handleDeleteExperience = async (experienceId) => {
     console.log('Deleting experience:', experienceId);
     const updatedExperiences = experiences.filter(exp => exp.id !== experienceId);
     setExperiences(updatedExperiences);
     if (editingExperience && editingExperience.id === experienceId) {
       setEditingExperience(null);
     }
-  };
 
+    const returnData = await deleteItem(experienceId, EXPERIENCES_ENDPOINT)
+  };
 
   const postEducation = async (edu) => {
     const school = edu.school
@@ -153,23 +167,23 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     setEditingEducation(null);
   };
 
-  const handleDeleteEducation = (educationId) => {
+  const handleDeleteEducation = async (educationId) => {
     console.log('Deleting education:', educationId);
     setEducation(education.filter(edu => edu.id !== educationId));
     if (editingEducation && editingEducation.id === educationId) {
       setEditingEducation(null);
     }
+
+    const returnData = await deleteItem(educationId, EDUCATION_ENDPOINT)
   };
 
   const postProject = async (proj) => {
-    const title = proj.school
-    const major = edu.major
-    const location = edu.location
-    const start_date = edu.start_date
-    const end_date = edu.end_date
-    const gpa = edu.gpa
+    const name = proj.name
+    const tools = proj.tools
+    const source_code = proj.source_code
+    const descriptions = proj.descriptions.map(desc => ({"content": desc}));
 
-    const body = {school, major, location, start_date, end_date, gpa}
+    const body = {name, tools, source_code, descriptions}
     const config = {
       headers: {
         'Content-Type': 'application/json'
@@ -178,7 +192,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
 
     console.log("body:", body)
 
-    const response = await axios.post(EDUCATION_ENDPOINT, body, config)
+    const response = await axios.post(PROJECTS_ENDPOINT, body, config)
     console.log(response)
     return response.data
   }
@@ -199,12 +213,13 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     setEditingProject(null);
   };
 
-  const handleDeleteProject = (projectId) => {
+  const handleDeleteProject = async (projectId) => {
     console.log('Deleting project:', projectId);
     setProjects(projects.filter(proj => proj.id !== projectId));
     if (editingProject && editingProject.id === projectId) {
       setEditingProject(null);
     }
+    const returnData = await deleteItem(projectId, PROJECTS_ENDPOINT)
   };
 
   // Handler for technical skills
