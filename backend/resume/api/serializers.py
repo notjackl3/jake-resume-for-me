@@ -7,7 +7,6 @@ class EducationSerializer(ModelSerializer):
         fields = ("id", "school", "major", "location", "start_date", "end_date", "gpa")
     
     def create(self, validated_data):
-        print("this ran")
         print("data here:", validated_data)
         education = Education.objects.create(**validated_data)
 
@@ -27,7 +26,7 @@ class ExperienceSerializer(ModelSerializer):
         fields = ("id", "title", "organisation", "location", "start_date", "end_date", "descriptions")
     
     def create(self, validated_data):
-        descriptions_data = validated_data.pop("descriptions")
+        descriptions_data = validated_data.pop("descriptions", [])
         experience = Experience.objects.create(**validated_data)
 
         for desc_data in descriptions_data:
@@ -35,6 +34,23 @@ class ExperienceSerializer(ModelSerializer):
             experience.descriptions.add(description)
 
         return experience
+
+    def update(self, instance, validated_data):
+        descriptions_data = validated_data.pop("descriptions", [])
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # instance.descriptions.clear()
+        for desc in descriptions_data:
+            try:
+                changing_desc = Description.objects.get(content=desc["content"])
+            except Description.DoesNotExist:
+                changing_desc = Description(content=desc["content"])
+                changing_desc.save()
+                instance.descriptions.add(changing_desc)
+
+        return instance
 
 class ProjectSerializer(ModelSerializer):
     descriptions = DescriptionSerializer(read_only=True, many=True)

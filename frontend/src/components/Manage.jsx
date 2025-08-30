@@ -4,8 +4,10 @@ import axios from "axios"
 import AddExperienceForm from './AddExperienceForm';
 import EditExperiencePanel from './EditExperiencePanel';
 import AddEducationForm from './AddEducationForm';
+import EditEducationPanel from './EditEducationPanel';
 // import EditEducationPanel from './EditEducationPanel';
 import AddProjectForm from './AddProjectForm';
+import EditProjectPanel from './EditProjectPanel';
 // import EditProjectPanel from './EditProjectPanel';
 import SkillsForm from './SkillsForm';
 
@@ -28,13 +30,10 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
 
   // Only update when props actually change
   useEffect(() => {
-    console.log("Props received:", { educationData, experiencesData, projectsData, skillsData });
-    
     if (educationData !== undefined) {
       setEducation(educationData);
     }
     if (experiencesData !== undefined) {
-      console.log("Setting experiences:", experiencesData);
       setExperiences(experiencesData);
     }
     if (projectsData !== undefined) {
@@ -44,11 +43,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
       setSkills(skillsData);
     }
   }, [educationData, experiencesData, projectsData, skillsData]);
-
-  // Add another useEffect to debug experiences state
-  useEffect(() => {
-    console.log("Experiences state updated:", experiences);
-  }, [experiences]);
   
   // track which item is being edited for each section
   const [editingExperience, setEditingExperience] = useState(null);
@@ -62,6 +56,18 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     { id: 'projects', label: 'Projects'},
     { id: 'skills', label: 'Skills'}
   ];
+
+  const deleteItem = async (id, endpoint) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const response = await axios.delete(`${endpoint}${id}/delete/`, config)
+    console.log(response)
+    return response.data
+  }
 
   const postExperience = async (exp) => {
     const title = exp.title 
@@ -78,8 +84,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
       }
     };
 
-    console.log("body:", body)
-
     const response = await axios.post(EXPERIENCES_ENDPOINT, body, config)
     console.log(response)
     return response.data
@@ -93,33 +97,39 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
 
     //to update the backend
     const newData = await postExperience(newExperience);
-    // console.log("New experience:", newExperience);
-    // console.log("Added experience, current experiences:", updatedExperiences);
   };
 
-  const handleEditExperience = (updatedExperience) => {
-    console.log('Updating experience:', updatedExperience);
-    const updatedExperiences = experiences.map(exp => 
-      exp.id === updatedExperience.id ? updatedExperience : exp
-    );
-    setExperiences(updatedExperiences);
-    setEditingExperience(null);
-  };
+  const editExperience = async (exp, exp_id) => {
+    const title = exp.title 
+    const organisation = exp.organisation 
+    const location = exp.location 
+    const start_date = exp.start_date
+    const end_date = exp.end_date
+    const descriptions = exp.descriptions.map(desc => ({content: desc.content}));
 
-  const deleteItem = async (id, endpoint) => {
+    const body = {title, organisation, location, start_date, end_date, descriptions}
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     };
 
-    const response = await axios.delete(`${endpoint}${id}/delete/`, config)
+    const response = await axios.put(`${EXPERIENCES_ENDPOINT}${exp_id}/`, body, config)
     console.log(response)
     return response.data
   }
 
+  const handleEditExperience = async (updatedExperience, id) => {
+    const updatedExperiences = experiences.map(exp => 
+      exp.id === id ? updatedExperience : exp
+    );
+    setExperiences(updatedExperiences);
+    setEditingExperience(null);
+
+    const newData = await editExperience(updatedExperience, id);
+  };
+
   const handleDeleteExperience = async (experienceId) => {
-    console.log('Deleting experience:', experienceId);
     const updatedExperiences = experiences.filter(exp => exp.id !== experienceId);
     setExperiences(updatedExperiences);
     if (editingExperience && editingExperience.id === experienceId) {
@@ -144,15 +154,12 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
       }
     };
 
-    console.log("body:", body)
-
     const response = await axios.post(EDUCATION_ENDPOINT, body, config)
     console.log(response)
     return response.data
   }
 
   const handleAddEducation = async (newEducation) => {
-    console.log('Adding education:', newEducation);
     const educationWithId = { ...newEducation, id: Date.now() };
     setEducation([...education, educationWithId]);
 
@@ -160,7 +167,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
   };
 
   const handleEditEducation = (updatedEducation) => {
-    console.log('Updating education:', updatedEducation);
     setEducation(education.map(edu => 
       edu.id === updatedEducation.id ? updatedEducation : edu
     ));
@@ -168,7 +174,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
   };
 
   const handleDeleteEducation = async (educationId) => {
-    console.log('Deleting education:', educationId);
     setEducation(education.filter(edu => edu.id !== educationId));
     if (editingEducation && editingEducation.id === educationId) {
       setEditingEducation(null);
@@ -190,15 +195,12 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
       }
     };
 
-    console.log("body:", body)
-
     const response = await axios.post(PROJECTS_ENDPOINT, body, config)
     console.log(response)
     return response.data
   }
 
   const handleAddProject = async (newProject) => {
-    console.log('Adding project:', newProject);
     const projectWithId = { ...newProject, id: Date.now() };
     setProjects([...projects, projectWithId]);
 
@@ -206,7 +208,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
   };
 
   const handleEditProject = (updatedProject) => {
-    console.log('Updating project:', updatedProject);
     setProjects(projects.map(proj => 
       proj.id === updatedProject.id ? updatedProject : proj
     ));
@@ -214,7 +215,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
   };
 
   const handleDeleteProject = async (projectId) => {
-    console.log('Deleting project:', projectId);
     setProjects(projects.filter(proj => proj.id !== projectId));
     if (editingProject && editingProject.id === projectId) {
       setEditingProject(null);
@@ -224,7 +224,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
 
   // Handler for technical skills
   const handleUpdateSkills = (updatedSkills) => {
-    console.log('Updating technical skills:', updatedSkills);
     setSkills(updatedSkills);
   };
 
@@ -314,9 +313,6 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const currentData = getCurrentData();
     const editingItem = getCurrentEditingItem();
 
-    console.log("Rendering list items for section:", activeSection);
-    console.log("Current data:", currentData);
-
     if (activeSection === 'skills') {
       // Technical skills don't have a list, just the form
       return (
@@ -380,9 +376,13 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
                 </>
               )}
               {item.descriptions && item.descriptions.length > 0 && (
-                <p className="text-xs text-gray-400 mt-1">
-                  {item.descriptions.length} description{item.descriptions.length > 1 ? 's' : ''}
-                </p>
+                <div className="mt-1">
+                  {item.descriptions.map((description, index) => (
+                    <p key={index} className="text-xs text-gray-400">
+                      • {description.content}
+                    </p>
+                  ))}
+                </div>
               )}
             </div>
             

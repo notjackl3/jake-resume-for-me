@@ -1,9 +1,7 @@
-// EditExperiencePanel.jsx
+// EditProjectPanel.jsx
 import { useState, useEffect } from 'react';
 
-const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
-  const [isCurrentJob, setIsCurrentJob] = useState(false);
-  const [idData, setIdData] = useState(0)
+const EditProjectPanel = ({ project, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
     title: '',
     organisation: '',
@@ -13,24 +11,21 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
     descriptions: ['']
   });
 
-  // Populate form with existing experience data
+  // Populate form with existing project data
   useEffect(() => {
-    if (experience) {
-      setIdData({id: experience.id})
+    if (project) {
       setFormData({
-        title: experience.title || '',
-        organisation: experience.organisation || '',
-        location: experience.location || '',
-        start_date: experience.start_date || '',
-        end_date: experience.end_date || '',
-        descriptions: experience.descriptions && experience.descriptions.length > 0 
-          ? experience.descriptions 
+        title: project.title || '',
+        organisation: project.organisation || '',
+        location: project.location || '',
+        start_date: project.start_date || '',
+        end_date: project.end_date || '',
+        descriptions: project.descriptions && project.descriptions.length > 0 
+          ? project.descriptions 
           : ['']
       });
-      // Set current job status based on whether end_date is empty
-      setIsCurrentJob(!experience.end_date || experience.end_date.trim() === '');
     }
-  }, [experience]);
+  }, [project]);
 
   // Handle regular input changes
   const handleInputChange = (event) => {
@@ -75,24 +70,18 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
     event.preventDefault();
     
     // Basic validation
-    if (!formData.title || !formData.organisation) {
-      alert('Please fill in title and organisation');
+    if (!formData.title) {
+      alert('Please fill in project title');
       return;
     }
 
-    // Handle current job logic - if current job, clear end date
-    const submissionData = {
-      ...formData,
-      end_date: isCurrentJob ? '' : formData.end_date
-    };
-
     // Filter out empty descriptions
     const cleanedData = {
-      ...submissionData,
-      descriptions: submissionData.descriptions.filter(desc => desc.content.trim() !== '')
+      ...formData,
+      descriptions: formData.descriptions.filter(desc => desc.trim() !== '')
     };
-    
-    onSave(cleanedData, idData.id);
+
+    onSave(cleanedData);
   };
 
   return (
@@ -100,7 +89,7 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
       {/* Title */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Job Title *
+          Project Title *
         </label>
         <input
           type="text"
@@ -108,15 +97,15 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
           value={formData.title}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          placeholder="e.g. Software Engineer"
+          placeholder="e.g. E-commerce Platform"
           required
         />
       </div>
 
-      {/* Company */}
+      {/* Organisation */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Company *
+          Organisation
         </label>
         <input
           type="text"
@@ -124,8 +113,7 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
           value={formData.organisation}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          placeholder="e.g. Google"
-          required
+          placeholder="e.g. Personal Project / Google"
         />
       </div>
 
@@ -167,30 +155,15 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
             name="end_date"
             value={formData.end_date}
             onChange={handleInputChange}
-            disabled={isCurrentJob}
-            className={`w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent ${
-              isCurrentJob ? 'bg-gray-100 cursor-not-allowed' : ''
-            }`}
+            className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           />
-          <div className="flex items-center gap-2 mt-1">
-            <input 
-              type="checkbox" 
-              id="current-job-edit"
-              checked={isCurrentJob}
-              onChange={(e) => setIsCurrentJob(e.target.checked)}
-              className="w-4 h-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-            />
-            <label htmlFor="current-job-edit" className="text-sm font-medium text-label-primary">
-              Current
-            </label>
-          </div>
         </div>
       </div>
 
       {/* Description Fields */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Job Descriptions
+          Project Descriptions
         </label>
         {formData.descriptions.map((description, index) => (
           <div key={index} className="flex gap-2 mb-2">
@@ -241,4 +214,4 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
   );
 };
 
-export default EditExperiencePanel;
+export default EditProjectPanel;

@@ -70,20 +70,6 @@ function App() {
     fetchAllData();
   }, []);
 
-
-  useEffect(() => {
-    console.log("Education Data:", educationData);
-  }, [educationData])
-  useEffect(() => {
-    console.log("Experiences Data:", experiencesData);
-  }, [experiencesData])
-  useEffect(() => {
-    console.log("Projects Data:", projectsData);
-  }, [projectsData])
-  useEffect(() => {
-    console.log("Skills Data:", skillsData);
-  }, [skillsData])
-
   return (
     <main>
       <div className="pattern"/>

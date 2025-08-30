@@ -24,8 +24,6 @@ const AddEducationForm = ({ onSubmit }) => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    console.log(formData)
     
     if (!formData.school || !formData.major) {
       alert('Please fill in school/college and major');

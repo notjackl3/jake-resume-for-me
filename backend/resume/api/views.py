@@ -10,6 +10,7 @@ class EducationViewSet(ModelViewSet):
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
 
+    # details=True allows us to have <pk:id> in the url, and it only selects one element. And this action is only available to the methods delete 
     @action(detail=True, methods=['delete'], url_path='delete')
     def custom_delete(self, request, pk=None):
         try:
@@ -31,6 +32,20 @@ class ExperienceViewSet(ModelViewSet):
             return Response({"message": "Experience deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
         except Experience.DoesNotExist:
             return Response({"error": "Experience not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        print(request.data)
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        else:
+            print("Serializer validation failed. Errors:")
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ProjectViewSet(ModelViewSet):
     queryset = Project.objects.all()
@@ -49,16 +64,3 @@ class SkillsViewSet(ModelViewSet):
     queryset = Skills.objects.all()
     serializer_class = SkillsSerializer
 
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-class ExperienceDeleteView(APIView):
-    def delete(self, request, pk):
-        try:
-            experience = Experience.objects.get(pk=pk)
-            experience.delete()
-            return Response({"message": "Experience deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-        except Experience.DoesNotExist:
-            return Response({"error": "Experience not found."}, status=status.HTTP_404_NOT_FOUND)
