@@ -73,12 +73,12 @@ const EditProjectPanel = ({ project, onSave, onCancel }) => {
       return;
     }
 
-    const objectDescriptions = submissionData.descriptions?.filter(item => typeof item === 'object' && item !== null) ?? [];
+    const objectDescriptions = formData.descriptions?.filter(item => typeof item === 'object' && item !== null) ?? [];
     const objectStringDescriptions = objectDescriptions.map(desc => desc.content)
-    const stringDescriptions = submissionData.descriptions?.filter(item => typeof item === 'string') ?? [];
+    const stringDescriptions = formData.descriptions?.filter(item => typeof item === 'string') ?? [];
 
     const cleanedData = {
-      ...submissionData,
+      ...formData,
       descriptions: [
         ...stringDescriptions.filter(desc => desc.trim() !== ''),
         ...objectStringDescriptions.filter(desc => desc.trim() !== '')

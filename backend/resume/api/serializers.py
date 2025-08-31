@@ -59,11 +59,28 @@ class ExperienceSerializer(ModelSerializer):
         return instance
 
 class ProjectSerializer(ModelSerializer):
-    descriptions = DescriptionSerializer(read_only=True, many=True)
+    descriptions = DescriptionSerializer(many=True)
 
     class Meta:
         model = Project
         fields = ("id", "name", "tools", "source_code", "descriptions")
+    
+    def update(self, instance, validated_data):
+        descriptions_data = validated_data.pop("descriptions", [])
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        instance.descriptions.clear()
+        for desc in descriptions_data:
+            try:
+                changing_desc = Description.objects.get(content=desc["content"])
+            except Description.DoesNotExist:
+                changing_desc = Description(content=desc["content"])
+                changing_desc.save()
+            instance.descriptions.add(changing_desc)
+
+        return instance
 
 class SkillsSerializer(ModelSerializer):
     class Meta:

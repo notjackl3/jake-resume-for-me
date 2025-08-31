@@ -58,6 +58,19 @@ class ProjectViewSet(ModelViewSet):
             return Response({"message": "Experience deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
         except Experience.DoesNotExist:
             return Response({"error": "Experience not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        serializer = self.get_serializer(instance, data=request.data, partial=False)
+        
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        else:
+            print("Serializer validation failed. Errors:")
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SkillsViewSet(ModelViewSet):
     queryset = Skills.objects.all()

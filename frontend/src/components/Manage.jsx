@@ -228,11 +228,31 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const newData = await postProject(newProject);
   };
 
-  const handleEditProject = (updatedProject) => {
+  const editProject = async (proj, proj_id) => {
+    const name = proj.name
+    const tools = proj.tools
+    const source_code = proj.source_code
+    const descriptions = proj.descriptions.map(desc => ({content: desc}));
+
+    const body = {name, tools, source_code, descriptions}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const response = await axios.put(`${PROJECTS_ENDPOINT}${proj_id}/`, body, config)
+    console.log(response)
+    return response.data
+  }
+
+
+  const handleEditProject = async (updatedProject, id) => {
     setProjects(projects.map(proj => 
       proj.id === updatedProject.id ? updatedProject : proj
     ));
-    setEditingProject(null);
+    const newData = await editProject(updatedProject, id);
+    location.reload();
   };
 
   const handleDeleteProject = async (projectId) => {
@@ -387,10 +407,10 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
               )}
               {activeSection === 'projects' && (
                 <>
-                  <h3 className="font-medium text-gray-900">{item.title}</h3>
+                  <h3 className="font-medium text-gray-900">{item.name}</h3>
                   <p className="text-sm text-gray-600">Tools: {item.tools}</p>
-                  {item.sourceCode && (
-                    <a href={item.sourceCode} className="text-sm text-blue-600 hover:underline">
+                  {item.source_code && (
+                    <a href={item.source_code} className="text-sm text-blue-600 hover:underline">
                       View Source Code
                     </a>
                   )}
