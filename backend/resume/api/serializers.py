@@ -7,10 +7,16 @@ class EducationSerializer(ModelSerializer):
         fields = ("id", "school", "major", "location", "start_date", "end_date", "gpa")
     
     def create(self, validated_data):
-        print("data here:", validated_data)
         education = Education.objects.create(**validated_data)
 
         return education
+    
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        return instance
 
 # create our model into json format to be sent over the web
 class DescriptionSerializer(ModelSerializer):
@@ -41,14 +47,14 @@ class ExperienceSerializer(ModelSerializer):
             setattr(instance, attr, value)
         instance.save()
 
-        # instance.descriptions.clear()
+        instance.descriptions.clear()
         for desc in descriptions_data:
             try:
                 changing_desc = Description.objects.get(content=desc["content"])
             except Description.DoesNotExist:
                 changing_desc = Description(content=desc["content"])
                 changing_desc.save()
-                instance.descriptions.add(changing_desc)
+            instance.descriptions.add(changing_desc)
 
         return instance
 

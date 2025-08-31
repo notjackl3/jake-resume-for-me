@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 
 const EditEducationPanel = ({ education, onSave, onCancel }) => {
+  const [idData, setIdData] = useState(0)
   const [formData, setFormData] = useState({
     school: '',
     major: '',
@@ -15,6 +16,7 @@ const EditEducationPanel = ({ education, onSave, onCancel }) => {
   // Populate form with existing education data
   useEffect(() => {
     if (education) {
+			setIdData(education.id)
       setFormData({
         school: education.school || '',
         major: education.major || '',
@@ -54,7 +56,7 @@ const EditEducationPanel = ({ education, onSave, onCancel }) => {
       gpa: formData.useGpa ? formData.gpa : ''
     };
 
-    onSave(cleanedData);
+    onSave(cleanedData, idData);
   };
 
   return (

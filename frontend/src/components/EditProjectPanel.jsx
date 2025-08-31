@@ -2,24 +2,22 @@
 import { useState, useEffect } from 'react';
 
 const EditProjectPanel = ({ project, onSave, onCancel }) => {
+  const [idData, setIdData] = useState(0)
   const [formData, setFormData] = useState({
-    title: '',
-    organisation: '',
-    location: '',
-    start_date: '',
-    end_date: '',
+    name: '',
+    tools: '',
+    source_code: '',
     descriptions: ['']
   });
 
   // Populate form with existing project data
   useEffect(() => {
     if (project) {
+      setIdData(project.id)
       setFormData({
-        title: project.title || '',
-        organisation: project.organisation || '',
-        location: project.location || '',
-        start_date: project.start_date || '',
-        end_date: project.end_date || '',
+        name: project.name || '',
+        tools: project.tools || '',
+        source_code: project.source_code || '',
         descriptions: project.descriptions && project.descriptions.length > 0 
           ? project.descriptions 
           : ['']
@@ -70,31 +68,36 @@ const EditProjectPanel = ({ project, onSave, onCancel }) => {
     event.preventDefault();
     
     // Basic validation
-    if (!formData.title) {
+    if (!formData.name) {
       alert('Please fill in project title');
       return;
     }
 
-    // Filter out empty descriptions
-    const cleanedData = {
-      ...formData,
-      descriptions: formData.descriptions.filter(desc => desc.trim() !== '')
-    };
+    const objectDescriptions = submissionData.descriptions?.filter(item => typeof item === 'object' && item !== null) ?? [];
+    const objectStringDescriptions = objectDescriptions.map(desc => desc.content)
+    const stringDescriptions = submissionData.descriptions?.filter(item => typeof item === 'string') ?? [];
 
-    onSave(cleanedData);
+    const cleanedData = {
+      ...submissionData,
+      descriptions: [
+        ...stringDescriptions.filter(desc => desc.trim() !== ''),
+        ...objectStringDescriptions.filter(desc => desc.trim() !== '')
+      ]
+    };
+    
+    onSave(cleanedData, idData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Title */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Project Title *
+          Project Name *
         </label>
         <input
           type="text"
-          name="title"
-          value={formData.title}
+          name="name"
+          value={formData.name}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="e.g. E-commerce Platform"
@@ -102,62 +105,32 @@ const EditProjectPanel = ({ project, onSave, onCancel }) => {
         />
       </div>
 
-      {/* Organisation */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Organisation
+          Tools & Technologies
         </label>
         <input
           type="text"
-          name="organisation"
-          value={formData.organisation}
+          name="tools"
+          value={formData.tools}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="e.g. Personal Project / Google"
         />
       </div>
 
-      {/* Location */}
       <div>
         <label className="block text-sm font-medium text-label-primary mb-1">
-          Location
+          Source Code Link
         </label>
         <input
           type="text"
-          name="location"
-          value={formData.location}
+          name="source_code"
+          value={formData.source_code}
           onChange={handleInputChange}
           className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="e.g. San Francisco, CA"
         />
-      </div>
-
-      {/* Date Range */}
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-label-primary mb-1">
-            Start Date
-          </label>
-          <input
-            type="month"
-            name="start_date"
-            value={formData.start_date}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-label-primary mb-1">
-            End Date
-          </label>
-          <input
-            type="month"
-            name="end_date"
-            value={formData.end_date}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 text-label-primary border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          />
-        </div>
       </div>
 
       {/* Description Fields */}

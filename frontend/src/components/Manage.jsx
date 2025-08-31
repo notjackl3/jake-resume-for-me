@@ -105,7 +105,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const location = exp.location 
     const start_date = exp.start_date
     const end_date = exp.end_date
-    const descriptions = exp.descriptions.map(desc => ({content: desc.content}));
+    const descriptions = exp.descriptions.map(desc => ({content: desc}));
 
     const body = {title, organisation, location, start_date, end_date, descriptions}
     const config = {
@@ -123,10 +123,10 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const updatedExperiences = experiences.map(exp => 
       exp.id === id ? updatedExperience : exp
     );
-    setExperiences(updatedExperiences);
-    setEditingExperience(null);
-
+    // setExperiences(updatedExperiences);
+    // setEditingExperience(null); no need since we are reloading anyways
     const newData = await editExperience(updatedExperience, id);
+    location.reload()
   };
 
   const handleDeleteExperience = async (experienceId) => {
@@ -166,11 +166,32 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const newData = await postEducation(newEducation);
   };
 
-  const handleEditEducation = (updatedEducation) => {
+  const editEducation = async (edu, edu_id) => {
+    const school = edu.school
+    const major = edu.major
+    const location = edu.location 
+    const start_date = edu.start_date
+    const end_date = edu.end_date
+    const gpa = edu.gpa
+
+    const body = {school, major, location, start_date, end_date, gpa}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const response = await axios.put(`${EDUCATION_ENDPOINT}${edu_id}/`, body, config)
+    console.log(response)
+    return response.data
+  }
+
+  const handleEditEducation = async (updatedEducation, id) => {
     setEducation(education.map(edu => 
       edu.id === updatedEducation.id ? updatedEducation : edu
     ));
-    setEditingEducation(null);
+    const newData = await editEducation(updatedEducation, id)
+    location.reload()
   };
 
   const handleDeleteEducation = async (educationId) => {
@@ -340,7 +361,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
         {currentData.map((item) => (
           <div 
             key={item.id} 
-            className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
+            className={`${item.id} flex items-center justify-between p-4 rounded-lg border-2 transition-all ${
               editingItem && editingItem.id === item.id
                 ? 'border-green-300 bg-green-50'
                 : 'border-gray-200 bg-gray-50 hover:bg-gray-100'

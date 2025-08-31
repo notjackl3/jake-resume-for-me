@@ -16,7 +16,7 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
   // Populate form with existing experience data
   useEffect(() => {
     if (experience) {
-      setIdData({id: experience.id})
+      setIdData(experience.id)
       setFormData({
         title: experience.title || '',
         organisation: experience.organisation || '',
@@ -86,13 +86,19 @@ const EditExperiencePanel = ({ experience, onSave, onCancel }) => {
       end_date: isCurrentJob ? '' : formData.end_date
     };
 
-    // Filter out empty descriptions
+    const objectDescriptions = submissionData.descriptions?.filter(item => typeof item === 'object' && item !== null) ?? [];
+    const objectStringDescriptions = objectDescriptions.map(desc => desc.content)
+    const stringDescriptions = submissionData.descriptions?.filter(item => typeof item === 'string') ?? [];
+
     const cleanedData = {
       ...submissionData,
-      descriptions: submissionData.descriptions.filter(desc => desc.content.trim() !== '')
+      descriptions: [
+        ...stringDescriptions.filter(desc => desc.trim() !== ''),
+        ...objectStringDescriptions.filter(desc => desc.trim() !== '')
+      ]
     };
     
-    onSave(cleanedData, idData.id);
+    onSave(cleanedData, idData);
   };
 
   return (
