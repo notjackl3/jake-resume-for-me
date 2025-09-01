@@ -16,6 +16,7 @@ const VITE_API_URL = import.meta.env.VITE_API_URL
 const EDUCATION_ENDPOINT = `${VITE_API_URL}/education/`
 const EXPERIENCES_ENDPOINT = `${VITE_API_URL}/experiences/`
 const PROJECTS_ENDPOINT = `${VITE_API_URL}/projects/`
+const SKILLS_ENDPOINT = `${VITE_API_URL}/skills/`
 
 
 const Manage = ({ educationData, experiencesData, projectsData, skillsData }) => {
@@ -263,9 +264,37 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const returnData = await deleteItem(projectId, PROJECTS_ENDPOINT)
   };
 
-  // Handler for technical skills
-  const handleUpdateSkills = (updatedSkills) => {
-    setSkills(updatedSkills);
+  const postSkill = async (skill) => {
+    const content = skill
+
+    const body = {content}
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const response = await axios.post(SKILLS_ENDPOINT, body, config)
+    console.log(response)
+    return response.data
+  }
+  
+  const handleAddSkill = async (inputSkills) => {
+    const newSkills = inputSkills.split(",").map(s => s.trim());
+
+    // Wait for all skills to be posted
+    const createdSkills = await Promise.all(newSkills.map(skill => postSkill(skill)));
+
+    // Update state AFTER all API calls succeed
+    setSkills(prevSkills => [...prevSkills, ...createdSkills]);
+  };
+
+  const handleDeleteSkill = async (skill_id) => {
+    console.log("removing index:", skill_id)
+    const filteredSkills = skills.filter(skill => skill.id !== skill_id);
+    setSkills(filteredSkills)
+
+    const returnData = await deleteItem(skill_id, SKILLS_ENDPOINT)
   };
 
   // Get current data based on active section
@@ -342,7 +371,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
         case 'projects':
           return <AddProjectForm onSubmit={handleAddProject} />;
         case 'skills':
-          return <SkillsForm skills={skills} onUpdate={handleUpdateSkills} />;
+          return <SkillsForm skills={skills} onUpdate={handleAddSkill} />;
         default:
           return null;
       }
@@ -355,10 +384,32 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
     const editingItem = getCurrentEditingItem();
 
     if (activeSection === 'skills') {
-      // Technical skills don't have a list, just the form
+      if (skills.length === 0) {
+        return (
+          <div className="text-center py-8 text-gray-500">
+            <p className="text-sm">No skills added yet. Start by adding your first skill above!</p>
+          </div>
+        );
+      }
+
       return (
-        <div className="text-center py-8 text-gray-500">
-          Configure your technical skills using the form above.
+        <div className="space-y-3 max-h-96 overflow-y-auto">
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill) => (
+                <div key={skill.id} className="flex items-center bg-gray-50 px-3 py-2 rounded-full border border-gray-200 shadow-sm">
+                  <span className="text-gray-900 text-sm font-medium">{skill.content}</span>
+                  <button
+                    onClick={() => handleDeleteSkill(skill.id)}
+                    className="ml-2 text-red-500 hover:text-red-700 text-sm font-bold w-4 h-4 flex items-center justify-center"
+                    title="Remove skill"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       );
     }
@@ -410,7 +461,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
                   <h3 className="font-medium text-gray-900">{item.name}</h3>
                   <p className="text-sm text-gray-600">Tools: {item.tools}</p>
                   {item.source_code && (
-                    <a href={item.source_code} className="text-sm text-blue-600 hover:underline">
+                    <a href={item.source_code} className="text-sm text-emerald-600 hover:underline">
                       View Source Code
                     </a>
                   )}
@@ -440,7 +491,7 @@ const Manage = ({ educationData, experiencesData, projectsData, skillsData }) =>
                 className={`px-3 py-1 text-sm rounded transition-colors ${
                   editingItem && editingItem.id === item.id
                     ? 'bg-green-200 text-green-800 cursor-not-allowed'
-                    : 'bg-blue-500 text-white hover:bg-blue-600'
+                    : 'bg-emerald-400 text-white hover:bg-emerald-600'
                 }`}
               >
                 {editingItem && editingItem.id === item.id ? 'Editing' : 'Edit'}

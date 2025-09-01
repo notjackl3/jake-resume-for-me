@@ -160,7 +160,7 @@ const AddEducationForm = ({ onSubmit }) => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors font-medium"
+        className="w-full bg-emerald-400 text-white py-2 px-4 rounded-md hover:bg-emerald-600 transition-colors font-medium"
       >
         Add Education
       </button>

@@ -72,7 +72,16 @@ class ProjectViewSet(ModelViewSet):
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class SkillsViewSet(ModelViewSet):
-    queryset = Skills.objects.all()
-    serializer_class = SkillsSerializer
+class SkillViewSet(ModelViewSet):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
+
+    @action(detail=True, methods=['delete'], url_path='delete')
+    def custom_delete(self, request, pk=None):
+        try:
+            skill = self.get_object()
+            skill.delete()
+            return Response({"message": "Experience deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except Experience.DoesNotExist:
+            return Response({"error": "Experience not found."}, status=status.HTTP_404_NOT_FOUND)
 

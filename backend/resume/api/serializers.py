@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from ..models import Education, Experience, Project, Skills, Description
+from ..models import Education, Experience, Project, Skill, Description
 
 class EducationSerializer(ModelSerializer):
     class Meta:
@@ -82,7 +82,7 @@ class ProjectSerializer(ModelSerializer):
 
         return instance
 
-class SkillsSerializer(ModelSerializer):
+class SkillSerializer(ModelSerializer):
     class Meta:
-        model = Skills
-        fields = ("languages_list", "frameworks_list", "tools_list", "technologies_list", "databases_list", "certificates_list")
+        model = Skill
+        fields = ("id", "content")

@@ -49,6 +49,9 @@ function App() {
         case "skills":
           response = await axios.get(SKILLS_ENDPOINT);
           fetchedData = response.data;
+
+          console.log("Skills fetched:", fetchedData) 
+          
           setSkillsData(fetchedData);
           break;
         default:

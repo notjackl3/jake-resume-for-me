@@ -38,14 +38,8 @@ class Project(models.Model):
     def __str__(self):
         return f"{self.name} - {self.tools}"
 
-class Skills(models.Model):
-    languages_list = models.CharField(null=True, blank=True)
-    frameworks_list = models.CharField(null=True, blank=True)
-    tools_list =  models.CharField(null=True, blank=True)
-    technologies_list = models.CharField(null=True, blank=True)
-    databases_list = models.CharField(null=True, blank=True)
-    certificates_list = models.CharField(null=True, blank=True)
+class Skill(models.Model):
+    content = models.CharField()
 
     def __str__(self):
-        return f"{self.languages_list} - {self.frameworks_list} - {self.tools_list} - {self.technologies_list} - {self.databases_list} - {self.certificates_list}"
-        
+        return f"{self.content}"

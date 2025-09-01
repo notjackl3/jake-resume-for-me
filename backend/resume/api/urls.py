@@ -12,5 +12,5 @@ experience_router.register(r"experiences", ExperienceViewSet) # whatever you put
 project_router = DefaultRouter()
 project_router.register(r"projects", ProjectViewSet)
 
-skills_router = DefaultRouter()
-skills_router.register(r"skills", SkillsViewSet)
+skill_router = DefaultRouter()
+skill_router.register(r"skills", SkillViewSet)
