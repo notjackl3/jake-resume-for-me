@@ -1,0 +1,242 @@
+%-------------------------
+% Resume in Latex
+% Author : Jake Gutierrez
+% Based off of: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+
+%----------FONT OPTIONS----------
+% sans-serif
+% \usepackage[sfdefault]{FiraSans}
+% \usepackage[sfdefault]{roboto}
+% \usepackage[sfdefault]{noto-sans}
+% \usepackage[default]{sourcesanspro}
+
+% serif
+% \usepackage{CormorantGaramond}
+% \usepackage{charter}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\usepackage{xcolor} % already have color, but xcolor is better
+\definecolor{DarkBlue}{RGB}{10, 100, 255} % a dark, muted blue
+\titleformat{\section}{
+  \vspace{-7pt}\color{DarkBlue}\scshape\raggedright\large
+}{}{0em}{}[\color{DarkBlue}\titlerule \vspace{-5pt}]
+
+% Ensure that generate pdf is machine readable/ATS parsable
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\renewcommand{\baselinestretch}{1.05}
+
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+% \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+%   \textbf{\href{http://sourabhbajaj.com/}{\Large Sourabh Bajaj}} & Email : \href{mailto:sourabh@sourabhbajaj.com}{sourabh@sourabhbajaj.com}\\
+%   \href{http://sourabhbajaj.com/}{http://www.sourabhbajaj.com} & Mobile : +1-123-456-7890 \\
+% \end{tabular*}
+
+\begin{center}
+    \textbf{\Huge \scshape Huu An Duc (Jack) Le} \\ \vspace{1pt}
+    \small 416-617-3686 $|$ \href{huuanducle@gmail.com}{\underline{huuanducle@gmail.com}} $|$ 
+    \href{https://jack-le.com/}{\underline{Jack-Le.com}} $|$
+    \href{https://www.linkedin.com/in/huu-an-duc-le/}{\underline{LinkedIn}} $|$
+    \href{https://github.com/notjackl3}{\underline{Github}}
+\end{center}
+
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {University of Toronto}{Mississauga, Canada}
+      {Computer Science Specialist \& Math Minor (Dean’s List Scholar)}{GPA: 3.9/4.0}
+  \resumeSubHeadingListEnd
+
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Software Project Lead}{August 2025 -- Present}
+      {UofT Blueprint}{Toronto, Canada}
+      \resumeItemListStart
+        \resumeItem{Lead a development team to build custom software solutions for NGOs, including web/desktop/mobile
+        applications}
+        \resumeItem{Implement Scrum framework and Agile methodologies, expect to result 20\% reduction of project delivery times}
+      \resumeItemListEnd
+
+% -----------Multiple Positions Heading-----------
+%    \resumeSubSubheading
+%     {Software Engineer I}{Oct 2014 - Sep 2016}
+%     \resumeItemListStart
+%        \resumeItem{Apache Beam}
+%          {Apache Beam is a unified model for defining both batch and streaming data-parallel processing pipelines}
+%     \resumeItemListEnd
+%    \resumeSubHeadingListEnd
+%-------------------------------------------
+    \resumeSubheading
+      {Vice President of Tech}{May 2025 -- Present}
+      {UTM Student Society for Algorithmic Modeling}{Mississauga, Canada}
+      \resumeItemListStart
+        \resumeItem{Collaborate with 6 tech associates to improve UX and mobile compatibility of UTMSAM's website using ReactJS}
+        \resumeItem{Spearhead EmberHacks, a 48-hour tech-driven hackathon, attracting 150+ students across 3 UofT campuses}
+        \resumeItem{Host workshops on full-stack web development, LeetCode problems, and quantitative tools (MATLAB, SageMath)}
+    \resumeItemListEnd
+    
+    \resumeSubheading
+      {Standard Operation Procedure Intern}{May 2025 -- August 2025}
+      {TRG International [Full-time]}{Ho Chi Minh, Vietnam}
+      \resumeItemListStart
+        \resumeItem{Created a version control tool for Word documents using Flask to reduce manual review effort by 25\%}
+        \resumeItem{Developed a Power Virtual Agent to notify 150+ employees of events, reducing communication time by 40\%}
+        \resumeItem{Automated geocoding of 100+ addresses using Python and researched relevant geospatial resources}
+        \resumeItem{Represented TRG at Greenwich Career Fair, achieving "Most Interactive Company" title with 200+ applicants}
+    \resumeItemListEnd
+    \resumeSubheading
+      {Computer Science Mentor}{September 2024 -- May 2025}
+      {University of Toronto}{Toronto, Canada}
+      \resumeItemListStart
+        \resumeItem{Conducted weekly mentoring sessions for first-year students on OOP, data structures, and complexity analysis}
+        \resumeItem{Contributed 600+ responses to courses' forum and received 95\% positive feedback from professors and students}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+        \resumeProjectHeading
+          {\textbf{Jake Resume For Me (in-progress)} $|$ \emph{Python, Django, Javascript, ReactJS, Tailwind CSS}}{\href{https://github.com/notjackl3/jake-resume-for-me}{\underline{Source Code}}}
+          \resumeItemListStart
+            \resumeItem{Design a resume builder to customize and generate PDF resumes \textbf{75\% faster} with custom content selections}
+            \resumeItem{Leverage React's components to create a \textbf{responsive interface} and reduce PDF load delay by \textbf{90\%}}
+            
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{UTM-Live} $|$ \emph{Python, Django, Javascript, Mapbox GL, PostgreSQL, Supabase}}{\href{https://github.com/notjackl3/utm-live/}{\underline{Source Code}}}
+          \resumeItemListStart
+            \resumeItem{Build an interactive \textbf{end-to-end full-stack} application for students to explore study spots with \textbf{3D mapping}}
+            \resumeItem{Enhance UX with \textbf{real-time dynamic lighting/weather} effects and seamless mouse interactions}
+            \resumeItem{Continuously detect user’s live location and calculated optimal routes to reduce travel time by \textbf{30\%}}
+            \resumeItem{Secure user access with \textbf{JWT-based auth} and Django session; designed \textbf{REST APIs} for personalized locations}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Image Gallery} $|$ \emph{Python, FastAPI, AWS, DynamoDB, EC2, S3, CloudFront, Lambda, Postman}}{\href{https://github.com/notjackl3/image-gallery/}{\underline{Source Code}}}
+          \resumeItemListStart
+            \resumeItem{Made a serverless image gallery with real-time uploads, using \textbf{S3} and \textbf{DynamoDB} for storage/metadata}
+            \resumeItem{Set up global caching using \textbf{CloudFront CDN}. Lowered the average images load time from \textbf{220ms to 35ms}}
+            \resumeItem{Compressed client-side images using Canvas API and reduce upload payloads by \textbf{60\%}}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Job Hunter} $|$ \emph{Python, Django, PostgreSQL, Supabase, EC2, NPTK, Matplotlib}}{\href{https://github.com/notjackl3/job-hunter/}{\underline{Source Code}}}
+          \resumeItemListStart
+            \resumeItem{\textbf{Web scraped} and analyzed \textbf{100+ job postings} from LinkedIn, Indeed, and Google using JobSpy2}
+            \resumeItem{Engineered a cover letter generator using keyword extraction and NLP, saving users \textbf{90\%} of manual writing time}
+            \resumeItem{Visualized market trends using \textbf{Matplotlib} and \textbf{Chart.js}, identifying top in-demand tech skills}
+          \resumeItemListEnd
+      \resumeProjectHeading
+          {\textbf{Youtube as a Service } $|$ \emph{Python, Google Cloud Platform, OpenCV, Numpy, Tailwind CSS}}{\href{https://github.com/notjackl3/YaaS/}{\underline{Source Code}}}
+          \resumeItemListStart
+            \resumeItem{Created a pipeline to compile files into Youtube videos, allowing \textbf{unlimited storage space} and \textbf{lossless} decoding}
+            \resumeItem{Produced compression-tolerant algorithm, achieving \textbf{99.9\% accuracy} in bit-level file recovery across \textbf{30+ files}}
+          \resumeItemListEnd
+    \resumeSubHeadingListEnd
+
+
+
+%
+%-----------PROGRAMMING SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, JavaScript, Java, SQL, HTML/CSS, LaTeX} \\
+     \textbf{Frameworks}{: Django, ReactJS, Spring Boot, FastAPI, Flask, Tailwind, Bootstrap} \\
+     \textbf{Tools \& Technologies}{: Git, PostgreSQL, AWS, Mapbox, Supabase, Render, Postman, GCP, Docker} \\
+     \textbf{Certificates}{: AWS Certified Cloud Practitioner, IB Computer Science Higher Level (Web Science)}
+    }}
+ \end{itemize}
+
+
+%-------------------------------------------
+\end{document}
